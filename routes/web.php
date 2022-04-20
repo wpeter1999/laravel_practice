@@ -49,15 +49,49 @@ Route::prefix('admin')->group(function(){
     Route::post('/menu',[MenuController::class,'store']);
     //update
     Route::patch('/title/{id}',[TitleController::class,'update']);
+    Route::patch('/ad/{id}',[AdController::class,'update']);
 
     //delete
     Route::delete('/title/{id}',[TitleController::class,'destroy']);
+    Route::delete('/ad/{id}',[AdController::class,'destroy']);
 
     //show
     Route::patch('/title/sh/{id}',[TitleController::class,'display']);
+    Route::patch('/ad/sh/{id}',[AdController::class,'display']);
 
 
 });
+
+
+//modles
+
+Route::get('/modals/addtitle',[TitleController::class,'create']);
+Route::get('/modals/addad',[AdController::class,'create']);
+
+//edit
+Route::get('/modals/title/{id}',[TitleController::class,'edit']);
+Route::get('/modals/ad/{id}',[AdController::class,'edit']);
+
+
+/*
+##群組路由##
+Route::prefix('admin')->group(function(){
+    Route::get('/', function () {
+        return view('backend.title');
+    });
+    
+    Route::get('/title', function () {
+        return view('backend.title');
+    });
+    
+    
+    Route::get('/ad', function () {
+        return view('backend.ad');
+    });
+});
+##群組路由##
+
+ */
 
 /*****不使用控制器的路由控制方式******* 
 
@@ -93,33 +127,3 @@ Route::get('/admin/{module}', function ($module) {
     }
 });
 */
-
-//modles
-
-Route::get('/modals/addtitle',[TitleController::class,'create']);
-Route::get('/modals/addad',[AdController::class,'create']);
-Route::view('/modals/addimage', 'modals.base_modal',['modal_header' => '新增校園映像圖片']);
-
-//edit
-Route::get('/modals/title/{id}',[TitleController::class,'edit']);
-
-
-/*
-##群組路由##
-Route::prefix('admin')->group(function(){
-    Route::get('/', function () {
-        return view('backend.title');
-    });
-    
-    Route::get('/title', function () {
-        return view('backend.title');
-    });
-    
-    
-    Route::get('/ad', function () {
-        return view('backend.ad');
-    });
-});
-##群組路由##
- */
-
