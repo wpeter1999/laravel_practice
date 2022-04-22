@@ -24,15 +24,20 @@
                                     <td>
                                         @switch($row['tag'])
                                             @case('input')
-                                                @include('layouts.input',$row)
+                                                @include('layouts.input', $row)
                                             @break
+
                                             @case('textarea')
-
+                                                @include('layouts.textarea', $row)
                                             @break
+
                                             @case('img')
-                                                @include('layouts.img',$row)
+                                                @include('layouts.img', $row)
                                             @break
 
+                                            @default
+                                            {{ $row['text'] }}
+                                            
                                         @endswitch
                                     </td>
                                 </tr>

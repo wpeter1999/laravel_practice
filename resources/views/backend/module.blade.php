@@ -41,19 +41,27 @@
                                                 @include('layouts.button', $item)
                                             @break
 
+                                            @case('embed')
+                                                @include('layouts.embed', $item)
+                                            @break
+
+                                            @case('textarea')
+                                                @include('layouts.textarea', $item)
+                                            @break
+
                                             @default
-                                                {{ $item['text'] }}
+                                                {!! nl2br($item['text']) !!}
                                         @endswitch
                                     </td>
                                 @endforeach
                             </tr>
                         @endforeach
                     @else
-                            <tr>
-                                <td>{{$cols[0]}}</td>
-                                <td>{{$rows[0]['text']}}</td>
-                                <td>@include('layouts.button',$rows[1])</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $cols[0] }}</td>
+                            <td>{{ $rows[0]['text'] }}</td>
+                            <td>@include('layouts.button', $rows[1])</td>
+                        </tr>
                     @endif
                 @endisset
             </table>
