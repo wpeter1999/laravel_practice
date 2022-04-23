@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Menu;
+use App\Models\SubMenu;
 
-class MenuController extends Controller
+class SubMenuController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($menu_id)
     {
-        $all=Menu::all();
-        $cols=['主選單名稱','連結網址','次選單數','顯示','編輯','刪除',''];
+        $all=SubMenu::where('menu_id', $menu_id)->get();
+        $cols=['次主選單名稱','次選單連結網址','編輯','刪除'];
         $rows=[];
 
         foreach($all as $a){
@@ -22,18 +28,6 @@ class MenuController extends Controller
                 [
                     'tag' =>'',
                     'text' =>$a->href,
-                ],
-                [
-                    'tag' =>'',
-                    'text' =>$a->subs->count(),
-                ],
-                [
-                    'tag' =>'button',
-                    'type' =>'button',
-                    'btn_color' =>'btn-success',
-                    'action' =>'show',
-                    'id' =>$a->id,
-                    'text'=>($a->sh==1)?'顯示':'隱藏',
                 ],
                 [
                     'tag' =>'button',
@@ -51,14 +45,6 @@ class MenuController extends Controller
                     'id' =>$a->id,
                     'text'=>'刪除',
                 ],
-                [
-                    'tag' =>'button',
-                    'type' =>'button',
-                    'btn_color' =>'btn-warning',
-                    'action' =>'sub',
-                    'id' =>$a->id,
-                    'text'=>'次選單',
-                ],
             ];
             $rows[]=$tmp;
         }
@@ -66,33 +52,35 @@ class MenuController extends Controller
         //dd($rows);
 
         $view=[
-            'header' => '選單管理',
-            'module' => 'menu',
+            'header' => '次選單管理',
+            'module' => 'submenu',
             'cols'=>$cols,
-            'rows' => $rows
+            'rows' => $rows,
+            'menu_id'=>$menu_id,
         ];
         return view('backend.module',$view);
     }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($menu_id)
     {
         $view=[
-            'action'=>'/admin/menu',
-            'modal_header' => '新增主選單',
+            'action'=>'/admin/submenu/'.$menu_id,
+            'modal_header' => '新增次選單',
             'modal_body' =>[
                 [
-                    'label' => '主選單名稱',
+                    'label' => '次選單名稱',
                     'tag'=>'input',
                     'type' => 'text',
                     'name' => 'text'
                 ],
                 [
-                    'label' => '主選單網址',
+                    'label' => '次選單網址',
                     'tag'=>'input',
                     'type' => 'text',
                     'name' => 'href'
@@ -108,16 +96,17 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$menu_id)
     {
         //無檔案處理需求
-        $menu=new Menu;
-        $menu->text=$request->input('text');
-        $menu->href=$request->input('href');
-        $menu->save();
+        $submenu=new SubMenu;
+        $submenu->text=$request->input('text');
+        $submenu->href=$request->input('href');
+        $submenu->menu_id=$menu_id;
+        $submenu->save();
         
         //
-        return redirect('/admin/menu');
+        return redirect('/admin/submenu/'.$menu_id);
     }
 
     /**
@@ -140,25 +129,25 @@ class MenuController extends Controller
     public function edit($id)
     {
         //
-        $menu=Menu::find($id);
+        $submenu=SubMenu::find($id);
         $view=[
-            'action'=>'/admin/menu/'.$id,
+            'action'=>'/admin/submenu/'.$id,
             'method'=>'patch',
-            'modal_header' => '編輯主選單資料',
+            'modal_header' => '編輯網站標題資料',
             'modal_body' =>[
                 [
-                    'label' => '主選單名稱',
+                    'label' => '次選單名稱',
                     'tag'=>'input',
                     'type' => 'text',
                     'name' => 'text',
-                    'value' =>$menu->text
+                    'value' =>$submenu->text
                 ],
                 [
-                    'label' => '主選單網址',
+                    'label' => '次選單網址',
                     'tag'=>'input',
                     'type' => 'text',
                     'name' => 'href',
-                    'value' => $menu->href
+                    'value' => $submenu->href
                 ],
             ],
         ];
@@ -176,26 +165,17 @@ class MenuController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $menu=Menu::find($id);
+        $submenu=SubMenu::find($id);
 
-        if($menu->text!=$request->input('text')){
-            $menu->text=$request->input('text');
+        if($submenu->text!=$request->input('text')){
+            $submenu->text=$request->input('text');
         }
-        if($menu->href!=$request->input('href')){
-            $menu->href=$request->input('href');
+        if($submenu->href!=$request->input('href')){
+            $submenu->href=$request->input('href');
         }
-
-        $menu->save();
-        return redirect('/admin/menu');
-    }
-
-    /**
-     * 改變資料顯示狀態
-     */
-    public function display($id) {
-        $menu=Menu::find($id);
-        $menu->sh=($menu->sh+1)%2;
-        $menu->save();
+        
+        $submenu->save();
+        return redirect('/admin/submenu/'.$submenu->menu_id);
     }
 
     /**
@@ -207,6 +187,6 @@ class MenuController extends Controller
     public function destroy($id)
     {
         //
-        Menu::destroy($id);
+        SubMenu::destroy($id);
     }
 }

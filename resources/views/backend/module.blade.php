@@ -77,6 +77,19 @@
             }
         });
         $("#addrow").on("click", function() {
+            @isset($menu_id)
+            $.get("/modals/add{{ $module }}/{{$menu_id}}", function(modal) {
+                $("#modal").html(modal)
+                $("#baseModal").modal("show")
+
+                //modal消失時清空記憶體與html
+                $("#baseModal").on("hidden.bs.modal", function() {
+                    $("#baseModal").modal("dispose")
+                    $("#modal").html("")
+                })
+            })
+
+            @else
             $.get("/modals/add{{ $module }}", function(modal) {
                 $("#modal").html(modal)
                 $("#baseModal").modal("show")
@@ -87,6 +100,7 @@
                     $("#modal").html("")
                 })
             })
+            @endif
         })
 
         $(".edit").on("click", function() {
@@ -106,11 +120,12 @@
         $(".delete").on("click", function() {
             if (confirm('確認是否刪除?')) {
                 let id = $(this).data("id")
+                let _this=$(this)
                 $.ajax({
                     type: 'delete',
                     url: `/admin/{{ $module }}/${id}`,
                     success: function() {
-                        location.reload()
+                        _this.parents('tr').remove()
                     }
                 })
             }
@@ -118,13 +133,25 @@
 
         $(".show").on("click", function() {
             let id = $(this).data("id")
+            let _this=$(this)
             $.ajax({
                 type: "patch",
                 url: `/admin/{{ $module }}/sh/${id}`,
                 success: function() {
-                    location.reload()
+                    if(_this.text()=="顯示"){
+                        _this.text('隱藏')
+                    }else{
+                        _this.text('顯示')
+                    }
                 }
             })
         })
+
+        $('.sub').on("click", function() {
+            let id = $(this).data("id")
+            location.href=`/admin/submenu/${id}`
+        })
+
+
     </script>
 @endsection
