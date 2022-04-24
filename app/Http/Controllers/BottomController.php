@@ -27,13 +27,12 @@ class BottomController extends Controller
 
         ];
 
-        $view=[
-            'header' => '頁尾版權管理',
-            'module' => 'bottom',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        $this->view['header']= '頁尾版權管理';
+        $this->view['module']='bottom';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
+
+        return view('backend.module',$this->view);
     }
 
 

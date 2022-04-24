@@ -50,13 +50,12 @@ class MvimController extends Controller
 
         //dd($rows);
 
-        $view=[
-            'header' => '動畫圖片管理',
-            'module' => 'mvim',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        $this->view['header']= '動畫圖片管理';
+        $this->view['module']='mvim';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
+
+        return view('backend.module',$this->view);
     }
 
     /**

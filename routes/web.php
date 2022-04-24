@@ -11,6 +11,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SubMenuController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +24,8 @@ use App\Http\Controllers\SubMenuController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
 //越確定的路由放上面，越不確定或需要帶變數的放下面
+Route::get('/',[HomeController::class,'index']);
 Route::redirect('/admin', '/admin/title'); // redirect=重新導向
 Route::prefix('admin')->group(function(){
     //get

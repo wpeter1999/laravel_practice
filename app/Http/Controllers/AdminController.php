@@ -44,14 +44,12 @@ class AdminController extends Controller
         }
 
         //dd($rows);
+        $this->view['header']= '管理員管理';
+        $this->view['module']='admin';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
 
-        $view=[
-            'header' => '管理員管理',
-            'module' => 'admin',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        return view('backend.module',$this->view);
     }
 
 

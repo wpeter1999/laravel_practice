@@ -48,14 +48,12 @@ class NewsController extends Controller
         }
 
         //dd($rows);
+        $this->view['header']= '最新消息管理';
+        $this->view['module']='news';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
 
-        $view=[
-            'header' => '最新消息管理',
-            'module' => 'news',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        return view('backend.module',$this->view);
     }
 
     /**

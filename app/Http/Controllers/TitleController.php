@@ -58,14 +58,12 @@ class TitleController extends Controller
         }
 
         //dd($rows);
+        $this->view['header']= '網站標題管理';
+        $this->view['module']='title';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
 
-        $view=[
-            'header' => '網站標題管理',
-            'module' => 'title',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        return view('backend.module',$this->view);
     }
 
     /**
@@ -205,14 +203,18 @@ class TitleController extends Controller
             $findDefault->sh=1;
             
             $findDefault->save();
+            $img=$findDefault->img;
         }else{
             $title->sh=1;
             $findShow=Title::where("sh",1)->first();
             $findShow->sh=0;
             
             $findShow->save();
+            $img=$title->img;
         }
         $title->save();
+
+        return $img;
     }
 
     /**

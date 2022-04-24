@@ -27,13 +27,12 @@ class TotalController extends Controller
 
         ];
 
-        $view=[
-            'header' => '進站總人數管理',
-            'module' => 'total',
-            'cols'=>$cols,
-            'rows' => $rows
-        ];
-        return view('backend.module',$view);
+        $this->view['header']= '進站總人數管理';
+        $this->view['module']='total';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
+
+        return view('backend.module',$this->view);
     }
 
     public function edit($id)

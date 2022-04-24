@@ -50,15 +50,14 @@ class SubMenuController extends Controller
         }
 
         //dd($rows);
+        $this->view['header']= '次選單管理';
+        $this->view['module']='submenu';
+        $this->view['cols']=$cols;
+        $this->view['rows']=$rows;
+        $this->view['menu_id']=$menu_id;
 
-        $view=[
-            'header' => '次選單管理',
-            'module' => 'submenu',
-            'cols'=>$cols,
-            'rows' => $rows,
-            'menu_id'=>$menu_id,
-        ];
-        return view('backend.module',$view);
+
+        return view('backend.module',$this->view);
     }
 
 
