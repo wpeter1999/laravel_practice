@@ -7,6 +7,9 @@ use App\Models\News;
 
 class NewsController extends Controller
 {
+    public function list(){
+        return view('news',$this->view);
+    }
     public function index()
     {
         $all=News::all();

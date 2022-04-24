@@ -26,6 +26,8 @@ use App\Http\Controllers\HomeController;
 
 //越確定的路由放上面，越不確定或需要帶變數的放下面
 Route::get('/',[HomeController::class,'index']);
+Route::get('/news',[NewsController::class,'list']);
+Route::get('/login',[AdminController::class,'showLoginForm']);
 Route::redirect('/admin', '/admin/title'); // redirect=重新導向
 Route::prefix('admin')->group(function(){
     //get

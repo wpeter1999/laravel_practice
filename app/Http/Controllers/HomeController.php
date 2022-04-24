@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Menu;
+use App\Models\SubMenu;
+use App\Models\Image;
 
 class HomeController extends Controller
 {
@@ -15,7 +18,19 @@ class HomeController extends Controller
     public function index()
     {
         //
-        return view('home',$this->view);
+        $menus=Menu::where('sh',1)->get();
+        $images=Image::where('sh',1)->get();
+
+        foreach($menus as $key =>$menu){
+            $submenu=$menu->subs;
+            $menu->submenu=$submenu;
+            $menus[$key]=$menu;
+        }
+
+        $this->view['menus']=$menus;
+        $this->view['images']=$images;
+
+        return view('main',$this->view);
     }
 
     /**
