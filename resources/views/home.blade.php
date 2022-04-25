@@ -20,9 +20,13 @@
                 @endforeach
             </ul>
         @endisset
+        <div class="viewer">
+            進站總人數: {{$total}}
+        </div>
 
     </div>
     <div class="main col-6">
+        <marquee>{{$ads}}</marquee>
         @yield('center')
     </div>
     <div class="right col-3">
@@ -73,6 +77,24 @@
             }
         })
     })
+
+    $(".mv").eq(0).show()
+    let mvNum=$(".mv").length;
+    let now=0;
+    setInterval(()=>{
+        $(".mv").hide();
+        ++now;
+        $(".mv").eq(now%mvNum).show();
+    },3000);
+
+    $(".new").hover(
+        function(){
+            $(this).children('div').show()
+        },
+        function(){
+            $(this).children('div').hide()
+        }
+    )
 </script>
 
 @endsection

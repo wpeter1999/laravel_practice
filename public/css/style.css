@@ -32,3 +32,19 @@
     text-align: center;
     display: none;
 }
+
+.viewer {
+    position: absolute;
+    bottom: 0;
+    padding: 50px;
+    text-align: center;
+}
+
+.mv img {
+    width: 90%;
+    height: 250px;
+}
+
+.mv {
+    display: none;
+}

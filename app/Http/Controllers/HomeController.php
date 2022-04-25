@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\SubMenu;
 use App\Models\Image;
+use App\Models\Ad;
+use App\Models\Mvim;
+use App\Models\News;
+
 
 class HomeController extends Controller
 {
@@ -17,85 +21,34 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        $this->sidebar();
+        $mvims=Mvim::where('sh',1)->get();
+        $news=News::where('sh',1)->get()->filter(function($value,$index){
+            if($index>4){
+                $this->view['more']="/news";
+            }else{
+                return $value;
+            }
+        });
+        $this->view['mvims']=$mvims;
+        $this->view['news']=$news;
+
+        return view('main',$this->view);
+    }
+
+    //主選單與圖片區
+    protected function sidebar(){  
         $menus=Menu::where('sh',1)->get();
         $images=Image::where('sh',1)->get();
-
+        $ads=\implode("　",AD::where('sh',1)->get()->pluck('text')->all());
         foreach($menus as $key =>$menu){
             $submenu=$menu->subs;
             $menu->submenu=$submenu;
             $menus[$key]=$menu;
         }
-
+        $this->view['ads']=$ads;
         $this->view['menus']=$menus;
         $this->view['images']=$images;
-
-        return view('main',$this->view);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
