@@ -4,7 +4,7 @@
     @include('layouts.backend_sidebar',['total'=>$total])
     <div class="main col-9 p-0 d-flex flex-wrap align-items-start">
         <div class="col-8 border py-3 text-center">後臺管理區</div>
-        <button class="col-4 btn btn-light boder py-3 text-center">管理登出</button>
+        <a href="/logout" class="col-4 btn btn-light boder py-3 text-center">管理登出</a>
         <div class="border w-100 p-1" style="height:500px;overflow:auto;">
             <h5 class="text-center border-bottom py-3">
 

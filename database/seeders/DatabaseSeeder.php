@@ -17,7 +17,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             TotalSeeder::class,
-            BottomSeeder::class
+            BottomSeeder::class,
+            AdminSeeder::class,
+            AdSeeder::class,
+            ImageSeeder::class,
+            MvimSeeder::class,
+            NewsSeeder::class,
+            TitleSeeder::class,
+
         ]);
     }
 }

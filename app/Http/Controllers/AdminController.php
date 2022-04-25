@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+
 
 class AdminController extends HomeController
 {
@@ -11,6 +14,36 @@ class AdminController extends HomeController
         parent::sidebar();
         return view('login',$this->view);
     }
+
+    public function logout(Request $request){
+        Auth::logout();
+        return redirect('/login');
+    }
+
+    public function login(Request $request){
+        $user=[
+            'acc'=>$request->input('acc'),
+            'password' =>$request->input('pw'),
+        ];
+
+        if(Auth::attempt($user)){
+            return redirect('/admin');
+        }else {
+            return redirect('/login')->with('error','帳號或密碼錯誤');
+        }
+
+        
+        // $acc=$request->input('acc');
+        // $pw=$request->input('pw');
+        // $check=Admin::where('acc',$acc)->where('pw',$pw)->count();
+        // if($check>0){
+        //     return redirect('/admin');
+        // }else {
+        //     return redirect('/login')->with('error','帳號或密碼錯誤');
+        // }
+
+    }
+
     public function index()
     {
         $all=Admin::all();
@@ -57,6 +90,7 @@ class AdminController extends HomeController
     }
 
 
+
     public function create()
     {
         $view=[
@@ -91,7 +125,7 @@ class AdminController extends HomeController
         //無檔案處理需求
         $admin=new Admin;
         $admin->acc=$request->input('acc');
-        $admin->pw=$request->input('pw');
+        $admin->pw=Hash::make($request->input('pw'));
         $admin->save();
         
         //
@@ -138,7 +172,7 @@ class AdminController extends HomeController
         $admin=Admin::find($id);
 
         if($admin->pw!=$request->input('pw')) {
-            $admin->pw=$request->input('pw');
+            $admin->pw=Hash::make($request->input('pw'));
             $admin->save();
         }
 
