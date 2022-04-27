@@ -26,7 +26,7 @@
 
     </div>
     <div class="main col-6">
-        <marquee>{{$ads}}</marquee>
+        <marquee>@{{adstr}}</marquee>
         @yield('center')
     </div>
     <div class="right col-3">
@@ -102,6 +102,24 @@
             $(this).children('div').hide()
         }
     )
+
+    //VUE練習
+    const app={
+        data(){
+            const bottom="{{$bottom}}";
+            const titleimg="{{ asset('storage/'.$title->img) }}";
+            const title="{{$title->text}}";
+            const adstr="{{$ads}}";
+
+            return{
+                bottom,
+                titleimg,
+                title,
+                adstr,
+            }
+        }
+    }
+    Vue.createApp(app).mount('#app');
 </script>
 
 @endsection
